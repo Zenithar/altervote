@@ -20,6 +20,7 @@ for section in sections:
     print("<section>")
     print("  <section>")
     print("    <h2>" + title + "</h2>")
+    print("    <a href=\"javascript:Reveal.next();\">Commencer</a>")
     print("  </section>")
 
     # Extract questions

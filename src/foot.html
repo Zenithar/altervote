@@ -1,7 +1,109 @@
+  <section>
+    <section id="resultats">
+      <h2>Résultats</h2>
+
+      <a class="result" href="javascript:void(0)">Obtenir les résultats</a>
+
+    </section>
+
+		<section id="francois-fillon">
+				<h2>François FILLON</h2>
+
+        <img src="https://s1.lemde.fr/mmpub/personalities/2.jpg"></img>
+        <br>
+        <a href="https://www.lemonde.fr/personnalite/francois-fillon/programme/" target="_blank">Voir le programme détaillé</a>
+		</section>
+
+		<section id="emmanuel-macron">
+			<h2>Emmanuel MACRON</h2>
+
+      <img src="https://s1.lemde.fr/mmpub/personalities/18.jpg"></img>
+      <br>
+      <a href="https://www.lemonde.fr/personnalite/emmanuel-macron/programme/" target="_blank">Voir le programme détaillé</a>
+		</section>
+
+		<section id="jean-lasalle">
+			<h2>Jean LASALLE</h2>
+
+      <img src="https://s1.lemde.fr/mmpub/personalities/23.jpg"></img>
+      <br>
+      <a href="https://www.lemonde.fr/personnalite/jean-lassalle/programme/" target="_blank">Voir le programme détaillé</a>
+		</section>
+
+		<section id="benoit-hamon">
+			<h2>Benoît HAMON</h2>
+
+      <img src="https://s1.lemde.fr/mmpub/personalities/9.jpg" style="width: 40%;"></img>
+      <br>
+      <a href="https://www.lemonde.fr/personnalite/benoit-hamon/programme/" target="_blank">Voir le programme détaillé</a>
+		</section>
+
+		<section id="jean-luc-melenchon">
+			<h2>Jean-luc MELENCHON</h2>
+
+      <img src="https://s1.lemde.fr/mmpub/personalities/17.jpg"></img>
+      <br>
+      <a href="https://www.lemonde.fr/personnalite/jean-luc-melenchon/programme/" target="_blank">Voir le programme détaillé</a>
+		</section>
+
+		<section id="nathalie-arthaud">
+			<h2>Nathalie ARTHAUD</h2>
+
+      <img src="https://s1.lemde.fr/mmpub/personalities/15.jpg"></img>
+      <br>
+      <a href="https://www.lemonde.fr/personnalite/nathalie-arthaud/programme/" target="_blank">Voir le programme détaillé</a>
+		</section>
+
+		<section id="phillipe-poutou">
+			<h2>Phillipe POUTOU</h2>
+
+      <img src="https://s1.lemde.fr/mmpub/personalities/16.jpg"></img>
+      <br>
+      <a href="https://www.lemonde.fr/personnalite/philippe-poutou/programme/" target="_blank">Voir le programme détaillé</a>
+		</section>
+
+		<section id="nicolas-dupont-aignant">
+			<h2>Nicolas DUPONT-AIGNAN</h2>
+
+      <img src="https://s1.lemde.fr/mmpub/personalities/19.jpg"></img>
+      <br>
+      <a href="https://www.lemonde.fr/personnalite/nicolas-dupont-aignan/programme/" target="_blank">Voir le programme détaillé</a>
+		</section>
+
+		<section id="marine-le-pen">
+			<h2>Marine LE PEN</h2>
+
+      <img src="https://s1.lemde.fr/mmpub/personalities/20.jpg"></img>
+      <br>
+      <a href="https://www.lemonde.fr/personnalite/marine-le-pen/programme/" target="_blank">Voir le programme détaillé</a>
+		</section>
+
+		<section id="jacques-cheminade">
+			<h2>Jacques CHEMINADE</h2>
+
+      <img src="https://s1.lemde.fr/mmpub/personalities/21.jpg"></img>
+      <br>
+      <a href="https://www.lemonde.fr/personnalite/jacques-cheminade/programme/" target="_blank">Voir le programme détaillé</a>
+		</section>
+
+		<section id="francois-asselineau">
+			<h2>François ASSELINEAU</h2>
+
+      <img src="https://s1.lemde.fr/mmpub/personalities/22.jpg"></img>
+      <br>
+      <a href="https://www.lemonde.fr/personnalite/francois-asselineau/programme/" target="_blank">Voir le programme détaillé</a>
+		</section>
+
+	</section>
+
 </div>
 
 		</div>
 
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+  					integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+  					crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js"></script>
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.js"></script>
 
@@ -22,5 +124,54 @@
 			});
 		</script>
 
+    <script>
+    $(function() {
+      // Globals
+      var candidates = {};
+
+      // Functions
+      function updateScores() {
+        candidates = {};
+        $("li.answer.selected").map(
+          function() {
+            var item = $(this);
+            // Dirty Hack
+            return eval(item.data('candidat')); }
+        ).each(
+          function() {
+            var c = this.toString();
+            if(c in candidates) {
+              candidates[c] += 1;
+            } else {
+              candidates[c] = 1;
+            }
+
+            // Update for debug
+            window.candidates = _.orderBy(
+              _.map(
+                _.keys(candidates), function(it) {
+                  return { name: it, count: candidates[it] };
+                }
+              )
+            , ['count'], ['desc']);
+          }
+        );
+      }
+
+      function gotoFinalist() {
+        var indices = Reveal.getIndices(document.getElementById(window.candidates[0].name));
+        Reveal.slide( indices.h, indices.v );
+      }
+
+      // Event wiring
+      $("li.answer a").on("click", function() { var $el = $(this);
+        $el.parent().toggleClass("selected"); Reveal.next(); updateScores(); });
+
+      $("a.result").on("click", function() {
+        updateScores();
+        gotoFinalist();
+      });
+    });
+    </script>
 	</body>
 </html>
